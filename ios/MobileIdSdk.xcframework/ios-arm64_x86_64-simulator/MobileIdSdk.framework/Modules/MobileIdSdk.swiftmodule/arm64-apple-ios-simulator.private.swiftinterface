@@ -1,0 +1,451 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.3 effective-5.10 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MobileIdSdk
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.3
+import CoreTelephony
+import CryptoKit
+import Foundation
+import Network
+import NetworkExtension
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum AuthChannel {
+  case IP
+  case SMS
+  public static func == (a: MobileIdSdk.AuthChannel, b: MobileIdSdk.AuthChannel) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class AuthorizationRequest : MobileIdSdk.RequestProtocol {
+  public var readTimeout: Foundation.TimeInterval
+  public var connectTimeout: Foundation.TimeInterval
+  public var isRedirect: Swift.Bool
+  public init()
+  public init(endpoint: Foundation.URL)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(endpoint: Foundation.URL?, queryParams: [Swift.String : Swift.String]?, headers: [Swift.String : Swift.String]?, connectTimeout: Foundation.TimeInterval, readTimeout: Foundation.TimeInterval, scope: Swift.String?, state: Swift.String?)
+  #endif
+  public class Builder {
+    public init()
+    public init(url: Swift.String)
+    public func addHeader(key: Swift.String, value: Swift.String)
+    public func setScope(value: Swift.String)
+    #if compiler(>=5.3) && $NonescapableTypes
+    public func setState(value: Swift.String?)
+    #endif
+    public func addQueryParam(key: Swift.String, value: Swift.String)
+    public func setConnectTimeout(value: Foundation.TimeInterval)
+    public func setReadTimeout(value: Foundation.TimeInterval)
+    public func build() -> MobileIdSdk.AuthorizationRequest
+    @objc deinit
+  }
+  public func toUri() -> Foundation.URLComponents
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func parseToURLComponents() -> Foundation.URLComponents?
+  #endif
+  public func formatedHeaders(enableCarrierHeaders: Swift.Bool) -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AuthorizationResponse : MobileIdSdk.ResponseProtocol {
+  public func getPlainResponse() -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getCode() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getState() -> Swift.String?
+  #endif
+  public func getError() -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getErrorCode() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getErrorDescription() -> Swift.String?
+  #endif
+  public func isAvailable() -> Swift.Bool
+  @objc deinit
+}
+public class AuthorizationService {
+  public var debug: Swift.Bool
+  public var callbackSuccess: ((_ response: MobileIdSdk.AuthorizationResponse) -> Swift.Void)?
+  public var callbackFailed: ((_ response: MobileIdSdk.MobileIdSdkException) -> Swift.Void)?
+  public var callbackLog: ((_ response: Swift.String) -> Swift.Void)?
+  public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @available(*, deprecated, message: "Use `startAuthentication` instead.")
+  public func startAuthorization(_ authRequest: MobileIdSdk.AuthorizationRequest? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func startAuthentication(_ authRequest: MobileIdSdk.AuthorizationRequest? = nil)
+  #endif
+  public func checkIPAddress()
+  public func checkRequestedIP(url: Swift.String)
+  @objc deinit
+}
+public struct MobileIdSdkErrorCode {
+  public static let generalError: Swift.Int
+  public static let networkIsNotActive: Swift.Int
+  public static let networkError: Swift.Int
+  public static let emptyPhoneNumber: Swift.Int
+  public static let emptyClientId: Swift.Int
+  public static let emptyRedirectUri: Swift.Int
+  public static let emptyScope: Swift.Int
+  public static let unsupportedVersion: Swift.Int
+  public static let emptyCoverageEndpoint: Swift.Int
+  public static let emptyLoginHint: Swift.Int
+  public static let emptyAuthEndpoint: Swift.Int
+  public static let networkIsUnavailable: Swift.Int
+  public static let simIsUnavailable: Swift.Int
+  public static let localNetworkPermissionRequired: Swift.Int
+  public static let emptyIMHeader: Swift.Int
+  public static let imFailed: Swift.Int
+  public static let imNoNetworkError: Swift.Int
+  public static let emptyIMPriorityAppList: Swift.Int
+  public static let networkResponseFailed: Swift.Int
+  public static let serverResponseFailed: Swift.Int
+}
+public enum MobileIdSdkError {
+  case validation
+  case unsupported_version
+  case notActive
+  case cannot_connect
+  case localNetworkPermissionRequired
+  case connection_error
+  case authorized_failed
+  case check_coverage_failed
+  case user_cancel
+  public var code: Swift.Int {
+    get
+  }
+  public static func == (a: MobileIdSdk.MobileIdSdkError, b: MobileIdSdk.MobileIdSdkError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct MobileIdSdkException : Swift.Error {
+  public let rawResponse: Swift.String?
+  public let errorCode: Swift.String?
+  public let errorDescription: Swift.String?
+  public let message: Swift.String
+  public let error: MobileIdSdk.MobileIdSdkError
+  public var localizedDescription: Swift.String {
+    get
+  }
+  public var sdkErrorCode: MobileIdSdk.MobileIdSdkError {
+    get
+  }
+  public var sdkErrorCodeNumber: Swift.Int {
+    get
+  }
+  public var isLocalNetworkPermissionRequired: Swift.Bool {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class ConnectionManager {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func checkNetworkInterfaces() -> (Swift.Bool, Swift.Bool, Swift.String?, Swift.String?, Swift.String?, Swift.String?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func checkOnly3G() -> (Swift.Bool, Swift.Bool, Swift.String?, Swift.String?)
+  #endif
+  @objc deinit
+}
+public class CoverageRequest : MobileIdSdk.RequestProtocol {
+  public var readTimeout: Foundation.TimeInterval
+  public var connectTimeout: Foundation.TimeInterval
+  public var isRedirect: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(endpoint: Foundation.URL?, queryParams: [Swift.String : Swift.String]?, headers: [Swift.String : Swift.String]?, connectTimeout: Foundation.TimeInterval, readTimeout: Foundation.TimeInterval)
+  #endif
+  public class Builder {
+    public init()
+    public func addHeader(key: Swift.String, value: Swift.String)
+    public func addQueryParam(key: Swift.String, value: Swift.String)
+    public func setConnectTimeout(value: Foundation.TimeInterval)
+    public func setReadTimeout(value: Foundation.TimeInterval)
+    public func build() -> MobileIdSdk.CoverageRequest
+    @objc deinit
+  }
+  public func toUri() -> Foundation.URLComponents
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func parseToURLComponents() -> Foundation.URLComponents?
+  #endif
+  public func formatedHeaders(enableCarrierHeaders: Swift.Bool) -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CoverageResponse : MobileIdSdk.ResponseProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getOperatorCode() -> Swift.String?
+  #endif
+  public func isAvailable() -> Swift.Bool
+  public func getError() -> Swift.String
+  public func getPlainResponse() -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getCode() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getState() -> Swift.String?
+  #endif
+  @objc deinit
+}
+public class CoverageService {
+  public var debug: Swift.Bool
+  public var callbackSuccess: ((_ response: MobileIdSdk.CoverageResponse) -> Swift.Void)?
+  public var callbackFailed: ((_ error: MobileIdSdk.MobileIdSdkException) -> Swift.Void)?
+  public var callbackLog: ((_ response: Swift.String) -> Swift.Void)?
+  public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @available(*, deprecated, message: "Use `startCheckCoverage` instead.")
+  public func checkCoverage(_ customCoverageRequest: MobileIdSdk.CoverageRequest? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func startCheckCoverage(_ customCoverageRequest: MobileIdSdk.CoverageRequest? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @available(*, deprecated, message: "Use `startCheckCoverage` instead.")
+  public func checkCoverage(phoneNumber phone: Swift.String, _ customCoverageRequest: MobileIdSdk.CoverageRequest? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func startCheckCoverage(phoneNumber phone: Swift.String, _ customCoverageRequest: MobileIdSdk.CoverageRequest? = nil)
+  #endif
+  @objc deinit
+}
+public enum IPEnvironment {
+  case SANDBOX
+  case PRODUCTION
+  case CUSTOM
+  public static func == (a: MobileIdSdk.IPEnvironment, b: MobileIdSdk.IPEnvironment) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class IPConfiguration : ObjectiveC.NSObject {
+  final public let CURRENT_VERSION: Swift.String
+  public var SDK_TYPE_VALUE: Swift.String
+  public var enableCarrierHeaders: Swift.Bool
+  public var STATE_LENGTH: Swift.Int
+  public var DEFAULT_SCOPE: Swift.String
+  public var CoverageReadTimeout: Swift.Double
+  public var CoverageConnectTimeout: Swift.Double
+  public var AuthReadTimeout: Swift.Double
+  public var AuthConnectTimeout: Swift.Double
+  public var LocalNetworkPermissionFirstPromptTimeout: Swift.Double
+  public var LocalNetworkPermissionTimeout: Swift.Double
+  public var LocalNetworkPermissionGraceTimeout: Swift.Double
+  public var ErrorReportTimeout: Swift.Double
+  public var BASE_URL: Swift.String?
+  public var REALM_NAME: Swift.String {
+    get
+    set
+  }
+  public var COVERAGE_PATH: Swift.String
+  public var AUTH_PATH: Swift.String
+  public var SDK_LOG_PATH: Swift.String
+  public var COVERAGE_PATH_FORCED_TRUE: Swift.String
+  public var COVERAGE_URL: Swift.String
+  public var AUTHORIZATION_URL: Swift.String
+  public var REDIRECT_URI: Swift.String
+  public var CLIENT_ID: Swift.String
+  public var SMS_BACKEND_URL_SANDBOX: Swift.String
+  public var SMS_BACKEND_URL_PRODUCTION: Swift.String
+  public var SMS_AUTH_PATH: Swift.String
+  public var SMS_TOKEN_PATH: Swift.String
+  public var SMS_SCOPE_VERIFY_PHONE: Swift.String
+  public var SMS_SERVER_ID: Swift.String
+  public var AUTH_CHANNELS: [MobileIdSdk.AuthChannel]
+  @available(*, deprecated, message: "Use CONSENT_ID_VALUE instead")
+  public var CONSENT_ID: Swift.String
+  public var CONSENT_ID_VALUE: Swift.String
+  public var RESPONSE_TYPE_VALUE: Swift.String
+  public var ENV: MobileIdSdk.IPEnvironment
+  @available(*, deprecated, message: "Use IPLogs.sharedInstance.log instead")
+  public var log: Swift.String
+  public var coverageAlwaysTrue: Swift.Bool
+  public var validateIMApps: Swift.Bool
+  public var IM_AUTO_MODE: Swift.Bool
+  public var IM_PRIORITY_APP_LIST: [Swift.String]
+  public var ENABLE_AUTO_OPEN_IM_APP: Swift.Bool
+  public var debug: Swift.Bool
+  public var automaticStateGenerationEnabled: Swift.Bool
+  public var customUrls: Swift.Bool
+  public var currentState: Swift.String
+  public var enableParamsValidation: Swift.Bool
+  public var enableCookieHandling: Swift.Bool
+  public static let sharedInstance: MobileIdSdk.IPConfiguration
+  public var hasSeenLocalNetworkPermissionPrompt: Swift.Bool {
+    get
+  }
+  public func resetLocalNetworkPermissionPromptTracking()
+  public var sendErrorReportsEnabled: Swift.Bool
+  public var SDK_LOG_URL_STAGE: Swift.String
+  public var SDK_LOG_URL_LIVE: Swift.String
+  public var MAX_LOG_LENGTH: Swift.Int
+  public func generateState() -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func generateHeaderLogs(inputPhone: Swift.String, CLIENT_IP: Swift.String?)
+  #endif
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class IPLogs : ObjectiveC.NSObject {
+  public var log: Swift.String {
+    get
+    set
+  }
+  public static let sharedInstance: MobileIdSdk.IPLogs
+  public func append(_ message: Swift.String)
+  public func clear()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public class MobileIdError : ObjectiveC.NSObject {
+  @objc public var errorCode: MobileIdSdk.MobileIdErrorCode
+  @objc public var errorMessage: Swift.String?
+  @objc public var rawResponse: Swift.String?
+  @objc public var code: Swift.String {
+    @objc get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public init(errorCode: MobileIdSdk.MobileIdErrorCode = .coverageUnavailable, errorMessage: Swift.String? = "", rawResponse: Swift.String? = nil)
+  #endif
+  @objc deinit
+}
+@objc public enum MobileIdErrorCode : Swift.Int {
+  case coverageUnavailable = 0
+  case coverageError = 1
+  case authenticateFail = 2
+  case authenticateIMCancel = 3
+  case configurationError = 4
+  public var code: Swift.String {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum MobileIdScope : Swift.Int {
+  case phoneVerify = 0
+  case phone = 1
+  case mobileId = 2
+  case profile = 3
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum MobileIdEnvironment : Swift.Int {
+  case sandbox = 0
+  case production = 1
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @objc public class MobileID : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc public func setEnv(_ env: MobileIdSdk.MobileIdEnvironment)
+  @objc public func setClientId(_ clientId: Swift.String)
+  @objc public func setRedirectUri(_ redirectUri: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(configureWithConfigUrl:headers:successWithData:fail:) public func configure(configUrl: Swift.String, headers: [Swift.String : Swift.String]? = nil, success: @escaping (Swift.String) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func configure(configUrl: Swift.String, headers: [Swift.String : Swift.String]? = nil, success: @escaping () -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  @objc public func setCheckCoverageUrl(_ url: Swift.String)
+  @objc public func setAuthorizationUrl(_ url: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func getClientId() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func getRedirectUri() -> Swift.String?
+  #endif
+  @objc public func generateState() -> Swift.String
+  @objc public func setState(_ value: Swift.String)
+  @objc public func addQueryParam(key: Swift.String, value: Swift.String)
+  @objc public func enableLog()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func getLog() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func getConfigurationByName(_ configName: Swift.String?) -> Swift.String?
+  #endif
+  @objc public func checkCoverage(success: @escaping (Swift.String) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  @objc public func checkCoverageWithPhoneNumber(_ phoneNumber: Swift.String, success: @escaping (Swift.String) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  @objc public func setScope(_ scope: MobileIdSdk.MobileIdScope)
+  public func setScopes(_ scopes: [MobileIdSdk.MobileIdScope])
+  @objc(setScopes:) public func setScopesObjc(_ scopes: [Foundation.NSNumber])
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(doAuthenticationWithLoginHint:scope:state:success:fail:) public func doAuthentication(loginHint: Swift.String = "", scope: MobileIdSdk.MobileIdScope = .phoneVerify, state: Swift.String? = nil, success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func doAuthentication(loginHint: Swift.String = "", scopes: [MobileIdSdk.MobileIdScope], state: Swift.String? = nil, success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(doAuthenticationWithLoginHint:scopes:state:success:fail:) public func doAuthentication(loginHint: Swift.String, scopes: [Foundation.NSNumber], state: Swift.String?, success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public func doAuthentication(loginHint: Swift.String, success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(doAuthenticationWithLoginHint:scope:success:fail:) public func doAuthenticationLegacy(loginHint: Swift.String, scope: MobileIdSdk.MobileIdScope, success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(doAuthenticationWithLoginHint:scopes:success:fail:) public func doAuthenticationLegacy(loginHint: Swift.String, scopes: [Foundation.NSNumber], success: @escaping (Swift.String?) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
+  @objc deinit
+}
+public protocol RequestProtocol : AnyObject {
+  var readTimeout: Foundation.TimeInterval { get set }
+  var connectTimeout: Foundation.TimeInterval { get set }
+  func toUri() -> Foundation.URLComponents
+  #if compiler(>=5.3) && $NonescapableTypes
+  func parseToURLComponents() -> Foundation.URLComponents?
+  #endif
+  func formatedHeaders(enableCarrierHeaders: Swift.Bool) -> Swift.String
+  var isRedirect: Swift.Bool { get set }
+}
+public protocol ResponseProtocol : AnyObject {
+  func getPlainResponse() -> Swift.String
+  func getError() -> Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  func getCode() -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  func getState() -> Swift.String?
+  #endif
+  func isAvailable() -> Swift.Bool
+}
+extension UIKit.UIDevice {
+  @_Concurrency.MainActor @preconcurrency public static let deviceModelName: Swift.String
+}
+extension MobileIdSdk.AuthChannel : Swift.Equatable {}
+extension MobileIdSdk.AuthChannel : Swift.Hashable {}
+extension MobileIdSdk.MobileIdSdkError : Swift.Equatable {}
+extension MobileIdSdk.MobileIdSdkError : Swift.Hashable {}
+extension MobileIdSdk.IPEnvironment : Swift.Equatable {}
+extension MobileIdSdk.IPEnvironment : Swift.Hashable {}
+extension MobileIdSdk.MobileIdErrorCode : Swift.Equatable {}
+extension MobileIdSdk.MobileIdErrorCode : Swift.Hashable {}
+extension MobileIdSdk.MobileIdErrorCode : Swift.RawRepresentable {}
+extension MobileIdSdk.MobileIdScope : Swift.Equatable {}
+extension MobileIdSdk.MobileIdScope : Swift.Hashable {}
+extension MobileIdSdk.MobileIdScope : Swift.RawRepresentable {}
+extension MobileIdSdk.MobileIdEnvironment : Swift.Equatable {}
+extension MobileIdSdk.MobileIdEnvironment : Swift.Hashable {}
+extension MobileIdSdk.MobileIdEnvironment : Swift.RawRepresentable {}

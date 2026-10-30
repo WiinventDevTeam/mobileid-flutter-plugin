@@ -1,0 +1,4 @@
+framework module MobileIdSdk {
+  header "MobileIdSdk-Swift.h"
+  requires objc
+}

@@ -1,0 +1,55 @@
+group = "vn.mobileid.mobileid.plugin"
+version = "1.1.0"
+
+buildscript {
+    ext.kotlin_version = "1.8.22"
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://raw.githubusercontent.com/WiinventDevTeam/mobileid-android-sdk/main/maven" }
+    }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+    namespace = "vn.mobileid.mobileid.plugin"
+
+    compileSdk = 34
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+    }
+
+    defaultConfig {
+        minSdk = 21
+    }
+}
+
+dependencies {
+    // MobileID native Android SDK, phân phối qua Maven repo trên GitHub. POM của artifact
+    // tự mang các transitive dependency runtime nên app không cần khai lại.
+    implementation "com.github.WiinventDevTeam:mobileid-android-sdk:1.1.0"
+}
